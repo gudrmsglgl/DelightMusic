@@ -52,7 +52,10 @@ plgn-kotlin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# Convention Plugin
 delight-android-application = { id = "delight.android.application" }
+delight-android-compose = { id = "delight.android.compose" }
 
 
 
