@@ -23,3 +23,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "DelightMusic"
 include(":app")
+include(":core")
+include(":core:model")
