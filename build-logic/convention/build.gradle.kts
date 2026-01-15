@@ -29,6 +29,10 @@ gradlePlugin {
             id = "delight.android.application"
             implementationClass = "io.delight.convention.AndroidApplicationConventionPlugin"
         }
+        register("androidLibrary") {
+            id = "delight.android.library"
+            implementationClass = "io.delight.convention.AndroidLibraryConventionPlugin"
+        }
         register("compose") {
             id = "delight.android.compose"
             implementationClass = "io.delight.convention.ComposeConventionPlugin"

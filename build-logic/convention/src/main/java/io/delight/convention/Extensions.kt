@@ -18,6 +18,8 @@ val Project.libs
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
+    pluginManager.apply(libs.findPlugin("kotlin-android").get().get().pluginId)
+
     commonExtension.apply {
         compileSdk = property("APP_TARGET_SDK_VERSION").toString().toInt()
 
@@ -47,9 +49,26 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
+internal fun Project.configureCoroutineKotlin() {
+    dependencies {
+        "implementation"(libs.findLibrary("coroutines-core").get())
+        "testImplementation"(libs.findLibrary("coroutines-test").get())
+    }
+}
+
+fun Project.configureCoroutineAndroid() {
+    configureCoroutineKotlin()
+    dependencies {
+        "implementation"(libs.findLibrary("coroutines-android").get())
+    }
+}
+
+
 fun Project.configureJetpackCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
+    pluginManager.apply(libs.findPlugin("kotlin-compose").get().get().pluginId)
+
     commonExtension.apply {
         buildFeatures {
             compose = true

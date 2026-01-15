@@ -10,11 +10,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.findPlugin("android-application").get().get().pluginId)
-                apply(libs.findPlugin("kotlin-android").get().get().pluginId)
             }
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
+                configureJetpackCompose(this)
 
                 namespace = "io.delight.delightmusic"
 
