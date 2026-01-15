@@ -37,5 +37,9 @@ gradlePlugin {
             id = "delight.android.compose"
             implementationClass = "io.delight.convention.ComposeConventionPlugin"
         }
+        register("kotlinLibrary") {
+            id = "delight.kotlin.library"
+            implementationClass = "io.delight.convention.KotlinLibraryConventionPlugin"
+        }
     }
 }

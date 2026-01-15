@@ -1,3 +1,5 @@
+package io.delight.convention
+
 import com.android.build.api.dsl.LibraryExtension
 import io.delight.convention.configureJetpackCompose
 import io.delight.convention.libs

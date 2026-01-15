@@ -1,3 +1,5 @@
+package io.delight.convention
+
 import com.android.build.gradle.LibraryExtension
 import io.delight.convention.configureCoroutineAndroid
 import io.delight.convention.configureKotlinAndroid
