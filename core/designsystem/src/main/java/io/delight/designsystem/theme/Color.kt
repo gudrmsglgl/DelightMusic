@@ -1,4 +1,4 @@
-package io.delight.delightmusic.ui.theme
+package io.delight.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

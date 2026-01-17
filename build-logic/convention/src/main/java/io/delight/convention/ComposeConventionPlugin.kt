@@ -1,8 +1,6 @@
 package io.delight.convention
 
 import com.android.build.api.dsl.LibraryExtension
-import io.delight.convention.configureJetpackCompose
-import io.delight.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
