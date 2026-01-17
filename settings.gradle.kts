@@ -26,9 +26,9 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "DelightMusic"
 include(":app")
-include(":core")
 include(":core:model")
-include(":core:datasource")
 include(":core:datasource:datasource-musiclist-api")
 include(":core:datasource:datasource-musiclist")
 include(":core:designsystem")
+include(":core:domain:domain-musiclist-api")
+include(":core:domain:domain-musiclist")

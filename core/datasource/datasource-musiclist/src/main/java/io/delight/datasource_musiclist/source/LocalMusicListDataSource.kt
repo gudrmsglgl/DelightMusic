@@ -6,8 +6,10 @@ import android.database.Cursor
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.delight.model.Music
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import androidx.core.net.toUri
 
@@ -39,7 +41,7 @@ class LocalMusicListDataSource
         return query
     }
 
-    suspend fun getAllMusic(): List<Music> = withContext(Dispatchers.IO) {
+    fun getAllMusic(): Flow<List<Music>> = flow {
         val musicList = mutableListOf<Music>()
 
         getMusicQuery()?.use { cursor ->
@@ -82,6 +84,6 @@ class LocalMusicListDataSource
                 )
             }
         }
-        musicList
-    }
+        emit(musicList)
+    }.flowOn(Dispatchers.IO)
 }

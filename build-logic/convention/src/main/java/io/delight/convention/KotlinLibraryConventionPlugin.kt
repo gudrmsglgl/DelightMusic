@@ -16,6 +16,8 @@ class KotlinLibraryConventionPlugin : Plugin<Project> {
                 libs.findPlugin("jetbrains-kotlin-jvm").get().get().pluginId
             )
 
+            configureCoroutineKotlin()
+
             extensions.configure<JavaPluginExtension> {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17

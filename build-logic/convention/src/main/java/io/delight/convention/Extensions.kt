@@ -76,7 +76,7 @@ internal fun Project.configureCoroutineKotlin() {
     }
 }
 
-fun Project.configureCoroutineAndroid() {
+internal fun Project.configureCoroutineAndroid() {
     configureCoroutineKotlin()
     dependencies {
         "implementation"(libs.findLibrary("coroutines-android").get())
@@ -93,7 +93,7 @@ fun Project.configureHiltAndroid() {
     }
 }
 
-fun Project.configureJetpackCompose(
+internal fun Project.configureJetpackCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
     pluginManager.apply(libs.findPlugin("kotlin-compose").get().get().pluginId)
@@ -118,4 +118,17 @@ fun Project.configureJetpackCompose(
         this.includeSourceInformation.set(true)
     }
 
+}
+
+fun Project.filterMultiModule(
+    implementsCallback: (target: Project) -> Unit
+) {
+    rootProject
+        .subprojects
+        .forEach { project ->
+            if (project.name != "app" && project.buildFile.isFile) {
+                println("!!!!!!!!!!!!!!!!project Info: ${project.name}")
+                implementsCallback(project)
+            }
+        }
 }
