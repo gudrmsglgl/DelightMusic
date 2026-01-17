@@ -17,6 +17,24 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 val Project.libs
     get() = this.extensions.getByType<VersionCatalogsExtension>().named("libs")
 
+internal val Project.applicationExtension: CommonExtension<*, *, *, *, *, *>
+    get() = extensions.getByType<ApplicationExtension>()
+
+internal val Project.libraryExtension: CommonExtension<*, *, *, *, *, *>
+    get() = extensions.getByType<LibraryExtension>()
+
+internal val Project.androidExtension: CommonExtension<*, *, *, *, *, *>
+    get() = runCatching { libraryExtension }
+        .recoverCatching { applicationExtension }
+        .onFailure { println("Could not find Library or Application extension from this project") }
+        .getOrThrow()
+
+fun Project.setNamespace(name: String) {
+    androidExtension.apply {
+        namespace = "io.delight.$name"
+    }
+}
+
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
