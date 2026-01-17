@@ -15,6 +15,8 @@ kotlinxCollectionsImmutable = "0.3.8"
 hilt-android = "2.56.1"
 coroutine = "1.9.0"
 jetbrainsKotlinJvm = "2.0.21"
+appcompat = "1.7.1"
+material = "1.13.0"
 
 [libraries]
 # Kotlin
@@ -47,12 +49,19 @@ compose-navigation = { module = "androidx.navigation:navigation-compose", versio
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 
+# Hilt
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
+
+
 # Plgn
 plgn-android = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 plgn-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 plgn-ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+plgn-hilt-android = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt-android" }
 plgn-kotlin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
-
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 [plugins]
@@ -66,7 +75,10 @@ delight-android-application = { id = "delight.android.application" }
 delight-android-compose = { id = "delight.android.compose" }
 delight-android-library = { id = "delight.android.library" }
 delight-kotlin-library = { id = "delight.kotlin.library" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 
+plugin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+plugin-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
 
 [bundles]
 compose = [

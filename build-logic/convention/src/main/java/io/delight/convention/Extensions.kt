@@ -1,6 +1,8 @@
 package io.delight.convention
 
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -63,6 +65,15 @@ fun Project.configureCoroutineAndroid() {
     }
 }
 
+fun Project.configureHiltAndroid() {
+    pluginManager.apply(libs.findPlugin("plugin-hilt").get().get().pluginId)
+    pluginManager.apply(libs.findPlugin("plugin-ksp").get().get().pluginId)
+
+    dependencies {
+        "implementation"(libs.findLibrary("hilt-android").get())
+        "ksp"(libs.findLibrary("hilt-android.compiler").get())
+    }
+}
 
 fun Project.configureJetpackCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>

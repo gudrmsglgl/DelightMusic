@@ -19,6 +19,7 @@ dependencies {
     compileOnly(libs.plgn.android)
     compileOnly(libs.plgn.kotlin)
     compileOnly(libs.plgn.ksp)
+    implementation(libs.plgn.hilt.android)
 
     compileOnly(libs.plgn.kotlin.compose.compiler)
 }
