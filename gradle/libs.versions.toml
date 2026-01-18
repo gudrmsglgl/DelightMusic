@@ -79,6 +79,7 @@ delight-android-application = { id = "delight.android.application" }
 delight-android-compose = { id = "delight.android.compose" }
 delight-android-library = { id = "delight.android.library" }
 delight-kotlin-library = { id = "delight.kotlin.library" }
+delight-feature-library = { id = "delight.feature.library" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 
 plugin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

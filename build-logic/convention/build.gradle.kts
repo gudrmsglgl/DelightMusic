@@ -42,5 +42,9 @@ gradlePlugin {
             id = "delight.kotlin.library"
             implementationClass = "io.delight.convention.KotlinLibraryConventionPlugin"
         }
+        register("featureLibrary") {
+            id = "delight.feature.library"
+            implementationClass = "io.delight.convention.FeatureLibraryConventionPlugin"
+        }
     }
 }
