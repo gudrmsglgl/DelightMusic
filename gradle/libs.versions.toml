@@ -19,6 +19,7 @@ jetbrainsKotlinJvm = "2.0.21"
 appcompat = "1.7.1"
 material = "1.13.0"
 coil = "2.7.0"
+media3 = "1.2.1"
 
 [libraries]
 # Kotlin
@@ -37,6 +38,12 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 
+# Media3
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
+androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
+
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -52,6 +59,7 @@ compose-navigation = { module = "androidx.navigation:navigation-compose", versio
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
 
 # Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
@@ -96,4 +104,11 @@ compose = [
     "compose-foundation",
     "compose-material-icons-extended",
     "coil-compose"
+]
+
+media3 = [
+    "androidx-media3-exoplayer",
+    "androidx-media3-ui",
+    "androidx-media3-common",
+    "androidx-media3-session"
 ]
