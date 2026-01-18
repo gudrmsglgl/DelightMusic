@@ -15,4 +15,3 @@ internal fun BoxScope.EmptyMusicList() {
         modifier = Modifier.align(Alignment.Center)
     )
 }
-

@@ -19,10 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.delight.component.EmptyMusicList
 import io.delight.component.LoadingIndicator
+import io.delight.component.PermissionDeniedContent
 import io.delight.core.feature.musiclist.R
 import io.delight.designsystem.component.ErrorMessage
 import io.delight.designsystem.component.MusicItemRow
 import io.delight.designsystem.theme.DelightMusicTheme
+import io.delight.effect.AudioPermissionEffect
 import io.delight.model.Music
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -34,6 +36,10 @@ fun MusicListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    val permissionState = AudioPermissionEffect(
+        onPermissionResult = viewModel::onPermissionResult
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -44,6 +50,8 @@ fun MusicListScreen(
         MusicListContent(
             uiState = uiState,
             onMusicClick = viewModel::onMusicClick,
+            onPermissionRequest = permissionState.onPermissionRequest,
+            onOpenAppSettings = permissionState.onOpenAppSettings,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -53,6 +61,8 @@ fun MusicListScreen(
 private fun MusicListContent(
     uiState: MusicListUiState,
     onMusicClick: (Music) -> Unit,
+    onPermissionRequest: () -> Unit,
+    onOpenAppSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -60,6 +70,13 @@ private fun MusicListContent(
     ) {
         when {
             uiState.isLoading -> LoadingIndicator()
+            !uiState.isPermissionGranted -> {
+                PermissionDeniedContent(
+                    onPermissionRequest = onPermissionRequest,
+                    onOpenAppSettings = onOpenAppSettings,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
             uiState.errorMessage != null -> {
                 ErrorMessage(
                     message = uiState.errorMessage,
@@ -106,9 +123,12 @@ private fun MusicListContentLoadingPreview() {
     DelightMusicTheme {
         MusicListContent(
             uiState = MusicListUiState(
-                isLoading = true
+                isLoading = true,
+                isPermissionGranted = true
             ),
-            onMusicClick = {}
+            onMusicClick = {},
+            onPermissionRequest = {},
+            onOpenAppSettings = {}
         )
     }
 }
@@ -120,9 +140,28 @@ private fun MusicListContentErrorPreview() {
         MusicListContent(
             uiState = MusicListUiState(
                 isLoading = false,
+                isPermissionGranted = true,
                 errorMessage = "에러가 발생했습니다."
             ),
-            onMusicClick = {}
+            onMusicClick = {},
+            onPermissionRequest = {},
+            onOpenAppSettings = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MusicListContentPermissionDeniedPreview() {
+    DelightMusicTheme {
+        MusicListContent(
+            uiState = MusicListUiState(
+                isLoading = false,
+                isPermissionGranted = false
+            ),
+            onMusicClick = {},
+            onPermissionRequest = {},
+            onOpenAppSettings = {}
         )
     }
 }
@@ -134,6 +173,7 @@ private fun MusicListContentSuccessPreview() {
         MusicListContent(
             uiState = MusicListUiState(
                 isLoading = false,
+                isPermissionGranted = true,
                 musicList = listOf(
                     Music(
                         id = 1,
@@ -158,7 +198,9 @@ private fun MusicListContentSuccessPreview() {
                 ),
                 currentPlayingId = 1
             ),
-            onMusicClick = {}
+            onMusicClick = {},
+            onPermissionRequest = {},
+            onOpenAppSettings = {}
         )
     }
 }
