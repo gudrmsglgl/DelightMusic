@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="music_list_title">음악 목록</string>
+    <string name="music_list_empty">저장된 음악이 없습니다.</string>
+</resources>
