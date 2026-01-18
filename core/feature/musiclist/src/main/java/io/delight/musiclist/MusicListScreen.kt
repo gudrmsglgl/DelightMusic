@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,6 +36,13 @@ fun MusicListScreen(
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    DisposableEffect(Unit) {
+        viewModel.connectPlayer()
+        onDispose {
+            viewModel.disconnectPlayer()
+        }
+    }
 
     val permissionState = AudioPermissionEffect(
         onPermissionResult = viewModel::onPermissionResult
@@ -84,11 +92,14 @@ private fun MusicListContent(
                 )
             }
             uiState.musicList.isEmpty() -> EmptyMusicList()
-            else -> MusicList(
-                musicList = uiState.musicList.toImmutableList(),
-                currentPlayingId = uiState.currentPlayingId,
-                onMusicClick = onMusicClick
-            )
+            else -> {
+                MusicList(
+                    musicList = uiState.musicList.toImmutableList(),
+                    currentPlayingId = uiState.currentPlayingId,
+                    isPlaying = uiState.isPlaying,
+                    onMusicClick = onMusicClick
+                )
+            }
         }
     }
 }
@@ -97,6 +108,7 @@ private fun MusicListContent(
 private fun MusicList(
     musicList: ImmutableList<Music>,
     currentPlayingId: Long?,
+    isPlaying: Boolean,
     onMusicClick: (Music) -> Unit
 ) {
     LazyColumn(
@@ -110,7 +122,7 @@ private fun MusicList(
                 title = music.title,
                 artist = music.artist,
                 albumArtUri = music.imageUrl.ifEmpty { null },
-                isPlaying = currentPlayingId == music.id,
+                isPlaying = currentPlayingId == music.id && isPlaying,
                 onClick = { onMusicClick(music) }
             )
         }
