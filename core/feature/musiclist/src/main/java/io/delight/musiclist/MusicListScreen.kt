@@ -15,12 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.delight.component.EmptyMusicList
 import io.delight.component.LoadingIndicator
 import io.delight.core.feature.musiclist.R
 import io.delight.designsystem.component.ErrorMessage
 import io.delight.designsystem.component.MusicItemRow
+import io.delight.designsystem.theme.DelightMusicTheme
 import io.delight.model.Music
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -95,5 +97,68 @@ private fun MusicList(
                 onClick = { onMusicClick(music) }
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MusicListContentLoadingPreview() {
+    DelightMusicTheme {
+        MusicListContent(
+            uiState = MusicListUiState(
+                isLoading = true
+            ),
+            onMusicClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MusicListContentErrorPreview() {
+    DelightMusicTheme {
+        MusicListContent(
+            uiState = MusicListUiState(
+                isLoading = false,
+                errorMessage = "에러가 발생했습니다."
+            ),
+            onMusicClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MusicListContentSuccessPreview() {
+    DelightMusicTheme {
+        MusicListContent(
+            uiState = MusicListUiState(
+                isLoading = false,
+                musicList = listOf(
+                    Music(
+                        id = 1,
+                        title = "Title 1",
+                        artist = "Artist 1",
+                        album = "Album 1",
+                        albumId = 1,
+                        durationMs = 1000,
+                        fileUrl = "",
+                        imageUrl = ""
+                    ),
+                    Music(
+                        id = 2,
+                        title = "Title 2",
+                        artist = "Artist 2",
+                        album = "Album 2",
+                        albumId = 2,
+                        durationMs = 2000,
+                        fileUrl = "",
+                        imageUrl = ""
+                    )
+                ),
+                currentPlayingId = 1
+            ),
+            onMusicClick = {}
+        )
     }
 }
