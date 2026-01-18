@@ -25,4 +25,13 @@ data class PlayerState(
 
     val currentMediaId: String?
         get() = currentMediaItem?.mediaId
+
+    val currentTitle: String?
+        get() = currentMediaItem?.mediaMetadata?.title?.toString()
+
+    val currentArtist: String?
+        get() = currentMediaItem?.mediaMetadata?.artist?.toString()
+
+    val currentAlbumArtUri: String?
+        get() = currentMediaItem?.mediaMetadata?.artworkUri?.toString()
 }
