@@ -14,12 +14,6 @@ data class PlayerState(
     val isBuffering: Boolean
         get() = playbackState == Player.STATE_BUFFERING
 
-    val isReady: Boolean
-        get() = playbackState == Player.STATE_READY
-
-    val isEnded: Boolean
-        get() = playbackState == Player.STATE_ENDED
-
     val progress: Float
         get() = if (duration > 0) currentPosition.toFloat() / duration else 0f
 

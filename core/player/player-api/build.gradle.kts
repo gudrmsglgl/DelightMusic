@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.bundles.media3)
+    implementation(libs.androidx.media3.common)
 }
 
-setNamespace("core.player.api")
+setNamespace("core.player.player_api")
