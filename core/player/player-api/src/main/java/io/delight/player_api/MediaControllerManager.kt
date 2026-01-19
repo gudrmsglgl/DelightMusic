@@ -23,6 +23,10 @@ interface MediaControllerManager {
     fun skipToPrevious()
 
     fun skipToNext()
+
+    fun toggleShuffle()
+
+    fun cycleRepeatMode()
 }
 
 

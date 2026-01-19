@@ -9,6 +9,7 @@ data class MediaItemData(
     val uri: String,
     val title: String? = null,
     val artist: String? = null,
+    val album: String? = null,
     val albumArtUri: String? = null
 )
 
@@ -19,6 +20,7 @@ fun MediaItemData.toMediaItem(): MediaItem = MediaItem.Builder()
         MediaMetadata.Builder()
             .setTitle(title)
             .setArtist(artist)
+            .setAlbumTitle(album)
             .setArtworkUri(albumArtUri?.toUri())
             .build()
     )

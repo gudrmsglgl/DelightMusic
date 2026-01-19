@@ -4,6 +4,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.PositionInfo
 import io.delight.player_api.PlayerState
+import io.delight.player_api.RepeatMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,7 +45,9 @@ class MediaPlayerListenerImpl @Inject constructor(
                 currentPosition = mediaController.currentPosition,
                 duration = mediaController.duration.takeIf { it > 0 } ?: 0L,
                 playbackState = mediaController.playbackState,
-                isConnected = true
+                isConnected = true,
+                shuffleEnabled = mediaController.shuffleModeEnabled,
+                repeatMode = RepeatMode.fromPlayer(mediaController.repeatMode)
             )
         )
 
@@ -107,6 +110,20 @@ class MediaPlayerListenerImpl @Inject constructor(
                     currentPlayerState.update {
                         it.copy(currentPosition = newPosition.positionMs)
                     }
+                }
+            }
+
+            override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+                super.onShuffleModeEnabledChanged(shuffleModeEnabled)
+                currentPlayerState.update {
+                    it.copy(shuffleEnabled = shuffleModeEnabled)
+                }
+            }
+
+            override fun onRepeatModeChanged(repeatMode: Int) {
+                super.onRepeatModeChanged(repeatMode)
+                currentPlayerState.update {
+                    it.copy(repeatMode = RepeatMode.fromPlayer(repeatMode))
                 }
             }
         }

@@ -1,5 +1,6 @@
 package io.delight.player
 
+import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import io.delight.player_api.MediaControllerManager
 import io.delight.player_api.model.MediaItemData
@@ -86,6 +87,22 @@ class MediaControllerManagerImpl @Inject constructor(
         mediaController?.let { controller ->
             if (controller.hasNextMediaItem()) {
                 controller.seekToNextMediaItem()
+            }
+        }
+    }
+
+    override fun toggleShuffle() {
+        mediaController?.let { controller ->
+            controller.shuffleModeEnabled = !controller.shuffleModeEnabled
+        }
+    }
+
+    override fun cycleRepeatMode() {
+        mediaController?.let { controller ->
+            controller.repeatMode = when (controller.repeatMode) {
+                Player.REPEAT_MODE_OFF -> Player.REPEAT_MODE_ALL
+                Player.REPEAT_MODE_ALL -> Player.REPEAT_MODE_ONE
+                else -> Player.REPEAT_MODE_OFF
             }
         }
     }

@@ -10,6 +10,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,14 +25,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.delight.player_api.RepeatMode
 
 @Composable
 internal fun MusicController(
     isPlaying: Boolean,
     isBuffering: Boolean,
+    shuffleEnabled: Boolean,
+    repeatMode: RepeatMode,
     onPlayPauseClick: () -> Unit,
     onPreviousClick: () -> Unit,
-    onNextClick: () -> Unit
+    onNextClick: () -> Unit,
+    onShuffleClick: () -> Unit,
+    onRepeatClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -37,17 +45,32 @@ internal fun MusicController(
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
+            onClick = onShuffleClick,
+            modifier = Modifier.size(48.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Shuffle,
+                contentDescription = "셔플",
+                modifier = Modifier.size(28.dp),
+                tint = if (shuffleEnabled) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                }
+            )
+        }
+
+        IconButton(
             onClick = onPreviousClick,
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(56.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.SkipPrevious,
                 contentDescription = "이전 곡",
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(36.dp),
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
-
 
         Surface(
             onClick = onPlayPauseClick,
@@ -78,13 +101,36 @@ internal fun MusicController(
 
         IconButton(
             onClick = onNextClick,
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(56.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.SkipNext,
                 contentDescription = "다음 곡",
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(36.dp),
                 tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+
+        IconButton(
+            onClick = onRepeatClick,
+            modifier = Modifier.size(48.dp)
+        ) {
+            Icon(
+                imageVector = when (repeatMode) {
+                    RepeatMode.ONE -> Icons.Default.RepeatOne
+                    else -> Icons.Default.Repeat
+                },
+                contentDescription = when (repeatMode) {
+                    RepeatMode.OFF -> "반복 끔"
+                    RepeatMode.ONE -> "한곡 반복"
+                    RepeatMode.ALL -> "전체 반복"
+                },
+                modifier = Modifier.size(28.dp),
+                tint = if (repeatMode != RepeatMode.OFF) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                }
             )
         }
     }
@@ -97,23 +143,49 @@ private fun MusicControllerPlayingPreview() {
         MusicController(
             isPlaying = true,
             isBuffering = false,
+            shuffleEnabled = false,
+            repeatMode = RepeatMode.OFF,
             onPlayPauseClick = {},
             onPreviousClick = {},
-            onNextClick = {}
+            onNextClick = {},
+            onShuffleClick = {},
+            onRepeatClick = {}
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun MusicControllerPausedPreview() {
+private fun MusicControllerShuffleAndRepeatPreview() {
+    MaterialTheme {
+        MusicController(
+            isPlaying = true,
+            isBuffering = false,
+            shuffleEnabled = true,
+            repeatMode = RepeatMode.ALL,
+            onPlayPauseClick = {},
+            onPreviousClick = {},
+            onNextClick = {},
+            onShuffleClick = {},
+            onRepeatClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MusicControllerRepeatOnePreview() {
     MaterialTheme {
         MusicController(
             isPlaying = false,
             isBuffering = false,
+            shuffleEnabled = false,
+            repeatMode = RepeatMode.ONE,
             onPlayPauseClick = {},
             onPreviousClick = {},
-            onNextClick = {}
+            onNextClick = {},
+            onShuffleClick = {},
+            onRepeatClick = {}
         )
     }
 }
@@ -125,9 +197,13 @@ private fun MusicControllerBufferingPreview() {
         MusicController(
             isPlaying = false,
             isBuffering = true,
+            shuffleEnabled = false,
+            repeatMode = RepeatMode.OFF,
             onPlayPauseClick = {},
             onPreviousClick = {},
-            onNextClick = {}
+            onNextClick = {},
+            onShuffleClick = {},
+            onRepeatClick = {}
         )
     }
 }
