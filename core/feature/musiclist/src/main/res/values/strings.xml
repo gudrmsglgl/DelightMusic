@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="music_list_title">음악 목록</string>
+    <string name="music_list_title">Playlist</string>
     <string name="music_list_empty">저장된 음악이 없습니다.</string>
     <string name="permission_required_message">음악을 불러오기 위해 권한이 필요합니다.</string>
     <string name="permission_grant_button">권한 허용하기</string>

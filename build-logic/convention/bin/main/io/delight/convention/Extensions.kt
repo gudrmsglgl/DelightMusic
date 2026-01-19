@@ -83,7 +83,7 @@ internal fun Project.configureCoroutineAndroid() {
     }
 }
 
-fun Project.configureHiltAndroid() {
+internal fun Project.configureHiltAndroid() {
     pluginManager.apply(libs.findPlugin("plugin-hilt").get().get().pluginId)
     pluginManager.apply(libs.findPlugin("plugin-ksp").get().get().pluginId)
 
