@@ -1,5 +1,6 @@
 package io.delight.player.di
 
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import androidx.media3.common.AudioAttributes
@@ -71,8 +72,22 @@ abstract class PlayerModule {
             player: ExoPlayer,
             callback: MediaSessionCallback
         ): MediaSession {
+            val sessionActivityPendingIntent = context.packageManager
+                .getLaunchIntentForPackage(context.packageName)
+                ?.let { intent ->
+                    PendingIntent.getActivity(
+                        context,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                }
+
             return MediaSession.Builder(context, player)
                 .setCallback(callback)
+                .apply {
+                    sessionActivityPendingIntent?.let { setSessionActivity(it) }
+                }
                 .build()
         }
 
