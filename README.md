@@ -36,3 +36,10 @@ core/
     └── player/         # Media3 기반 구현
 
 ```
+
+## 앱 실행
+
+
+https://github.com/user-attachments/assets/63ccf9ce-9b30-4eee-8135-b4ad26b0df01
+
+
