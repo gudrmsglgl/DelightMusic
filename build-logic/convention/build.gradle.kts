@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.plgn.hilt.android)
 
     compileOnly(libs.plgn.kotlin.compose.compiler)
+    implementation(libs.plgn.kotlin.serialization)
 }
 
 gradlePlugin {

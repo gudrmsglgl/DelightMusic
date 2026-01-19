@@ -9,9 +9,11 @@ class FeatureLibraryConventionPlugin : Plugin<Project> {
         with (target) {
             pluginManager.apply(libs.findPlugin("delight-android-library").get().get().pluginId)
             pluginManager.apply(libs.findPlugin("delight-android-compose").get().get().pluginId)
+            pluginManager.apply(libs.findPlugin("kotlin-serialization").get().get().pluginId)
 
             dependencies {
                 "implementation"(project(":core:designsystem"))
+                "implementation"(libs.findLibrary("kotlinx-serialization-json").get())
             }
         }
     }

@@ -15,7 +15,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 configureJetpackCompose(this)
-
+                configureHiltAndroid()
+                
                 namespace = "io.delight.delightmusic"
 
                 defaultConfig {
