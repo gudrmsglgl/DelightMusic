@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.delight.domain_musiclist_api.GetMusicListUseCase
 import io.delight.model.Music
-import io.delight.player_api.MusicPlayerManager
+import io.delight.player_api.MediaControllerManager
+import io.delight.player_api.model.MediaItemData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,12 +21,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class MusicListViewModel @Inject constructor(
     private val getMusicListUseCase: GetMusicListUseCase,
-    private val musicPlayerManager: MusicPlayerManager
+    private val mediaControllerManager: MediaControllerManager
 ) : ViewModel() {
 
     private val isPermissionGranted = MutableStateFlow(false)
@@ -42,7 +44,8 @@ class MusicListViewModel @Inject constructor(
         }
     }
 
-    private val playbackUiState = musicPlayerManager.playerState
+    private val playbackUiState = mediaControllerManager
+        .playerState
         .map { PlaybackUiState(it.currentMediaId?.toLongOrNull(), it.isPlaying) }
         .distinctUntilChanged()
 
@@ -57,33 +60,34 @@ class MusicListViewModel @Inject constructor(
     )
 
     fun onPermissionResult(isGranted: Boolean) {
-        isPermissionGranted.value = isGranted
-    }
-
-    fun onMusicClick(music: Music) {
-        val currentPlayingId = musicPlayerManager.playerState
-            .value
-            .currentMediaId?.toLongOrNull()
-        
-        if (currentPlayingId == music.id) {
-            musicPlayerManager.togglePlayPause()
-        } else {
-            musicPlayerManager.playMedia(
-                mediaId = music.id.toString(),
-                uri = music.fileUrl,
-                title = music.title,
-                artist = music.artist
-            )
+        isPermissionGranted.update {
+            isGranted
         }
     }
 
-    fun connectPlayer() {
-        musicPlayerManager.connect()
-    }
+    fun onMusicClick(music: Music) {
+        val currentPlayingId = uiState.value.currentPlayingId
 
-    fun disconnectPlayer() {
-        musicPlayerManager.disconnect()
+        if (currentPlayingId != music.id) {
+            val currentMusicList = uiState.value.musicList
+            val startIndex = currentMusicList
+                .indexOfFirst { it.id == music.id }
+                .takeIf { it >= 0 }
+                ?: 0
+
+            val playlist = currentMusicList.map { it.toMediaItemData() }
+            mediaControllerManager.setPlaylistAndPlay(playlist, startIndex)
+        }
     }
+    
+    private fun Music.toMediaItemData() = MediaItemData(
+        mediaId = id.toString(),
+        uri = fileUrl,
+        title = title,
+        artist = artist,
+        album = album,
+        albumArtUri = imageUrl.ifEmpty { null }
+    )
 
 }
 

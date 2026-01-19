@@ -10,7 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,16 +32,10 @@ import kotlinx.collections.immutable.toImmutableList
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MusicListScreen(
+    onMusicItemClick: () -> Unit = {},
     viewModel: MusicListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    DisposableEffect(Unit) {
-        viewModel.connectPlayer()
-        onDispose {
-            viewModel.disconnectPlayer()
-        }
-    }
 
     val permissionState = AudioPermissionEffect(
         onPermissionResult = viewModel::onPermissionResult
@@ -57,7 +50,10 @@ fun MusicListScreen(
     ) { paddingValues ->
         MusicListContent(
             uiState = uiState,
-            onMusicClick = viewModel::onMusicClick,
+            onMusicClick = { music ->
+                viewModel.onMusicClick(music)
+                onMusicItemClick()
+            },
             onPermissionRequest = permissionState.onPermissionRequest,
             onOpenAppSettings = permissionState.onOpenAppSettings,
             modifier = Modifier.padding(paddingValues)
