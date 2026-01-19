@@ -34,6 +34,5 @@ core/
 └── player/
     ├── player-api/     # 플레이어 인터페이스
     └── player/         # Media3 기반 구현
-```
 
 ```
