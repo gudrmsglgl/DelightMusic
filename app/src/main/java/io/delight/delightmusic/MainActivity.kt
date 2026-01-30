@@ -18,12 +18,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            LaunchedRouter(
-                navHostController = rememberNavController()
-            )
+            val navController = rememberNavController()
+            LaunchedRouter(navHostController = navController)
 
             DelightMusicTheme {
-                DelightNavHost()
+                DelightNavHost(navController = navController)
             }
         }
     }
