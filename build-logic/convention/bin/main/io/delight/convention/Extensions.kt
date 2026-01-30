@@ -120,6 +120,14 @@ internal fun Project.configureJetpackCompose(
 
 }
 
+fun Project.configureKotlinSerialization() {
+    pluginManager.apply(libs.findPlugin("kotlin-serialization").get().get().pluginId)
+
+    dependencies {
+        "implementation"(libs.findLibrary("kotlinx-serialization-json").get())
+    }
+}
+
 fun Project.filterMultiModule(
     implementsCallback: (target: Project) -> Unit
 ) {
