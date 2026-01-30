@@ -31,7 +31,6 @@ import io.delight.designsystem.theme.DelightMusicTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MusicDetailScreen(
-    onBackClick: () -> Unit,
     viewModel: MusicDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -39,7 +38,7 @@ fun MusicDetailScreen(
     Scaffold(
         topBar = {
             MusicDetailTopBar(
-                onBackClick = onBackClick
+                onBackClick = viewModel::onBack
             )
         }
     ) { paddingValues ->

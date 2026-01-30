@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.delight.player_api.MediaControllerManager
+import io.delight.router_api.Navigator
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MusicDetailViewModel @Inject constructor(
-    private val mediaControllerManager: MediaControllerManager
+    private val mediaControllerManager: MediaControllerManager,
+    private val navigator: Navigator
 ) : ViewModel() {
 
     private val actions = MutableSharedFlow<MusicDetailAction>().also { flow ->
@@ -72,6 +74,12 @@ class MusicDetailViewModel @Inject constructor(
     fun dispatch(action: MusicDetailAction) {
         viewModelScope.launch {
             actions.emit(action)
+        }
+    }
+
+    fun onBack() {
+        viewModelScope.launch {
+            navigator.navigateBack()
         }
     }
 }

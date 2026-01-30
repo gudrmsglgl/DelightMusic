@@ -51,8 +51,8 @@ fun MusicListScreen(
         MusicListContent(
             uiState = uiState,
             onMusicClick = { music ->
-                viewModel.onMusicClick(music)
-                onMusicItemClick()
+                viewModel.playMusic(music)
+                viewModel.navigateMusicDetail()
             },
             onPermissionRequest = permissionState.onPermissionRequest,
             onOpenAppSettings = permissionState.onOpenAppSettings,

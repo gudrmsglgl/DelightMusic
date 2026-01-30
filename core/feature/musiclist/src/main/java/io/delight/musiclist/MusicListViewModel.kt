@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.delight.domain_musiclist_api.GetMusicListUseCase
 import io.delight.model.Music
+import io.delight.musicdetail_api.MusicDetailRoute
 import io.delight.player_api.MediaControllerManager
 import io.delight.player_api.model.MediaItemData
+import io.delight.router_api.Navigator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,12 +24,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MusicListViewModel @Inject constructor(
     private val getMusicListUseCase: GetMusicListUseCase,
-    private val mediaControllerManager: MediaControllerManager
+    private val mediaControllerManager: MediaControllerManager,
+    private val navigator: Navigator
 ) : ViewModel() {
 
     private val isPermissionGranted = MutableStateFlow(false)
@@ -65,7 +69,7 @@ class MusicListViewModel @Inject constructor(
         }
     }
 
-    fun onMusicClick(music: Music) {
+    fun playMusic(music: Music) {
         val currentPlayingId = uiState.value.currentPlayingId
 
         if (currentPlayingId != music.id) {
@@ -77,6 +81,12 @@ class MusicListViewModel @Inject constructor(
 
             val playlist = currentMusicList.map { it.toMediaItemData() }
             mediaControllerManager.setPlaylistAndPlay(playlist, startIndex)
+        }
+    }
+
+    fun navigateMusicDetail() {
+        viewModelScope.launch {
+            navigator.navigate(MusicDetailRoute)
         }
     }
     

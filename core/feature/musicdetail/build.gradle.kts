@@ -8,6 +8,8 @@ dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.model)
     implementation(projects.core.player.playerApi)
+
+    implementation(projects.core.feature.musicdetailApi)
 }
 
 setNamespace("core.feature.musicdetail")
