@@ -5,8 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import io.delight.navigation.MusicDetailRoute
-import io.delight.navigation.MusicListRoute
+import io.delight.musiclist_api.MusicListRoute
 import io.delight.navigation.musicDetailScreen
 import io.delight.navigation.musicListScreen
 
@@ -20,14 +19,8 @@ fun DelightNavHost(
         startDestination = MusicListRoute,
         modifier = modifier
     ) {
-        musicListScreen(
-            onMusicItemClick = {
-                navController.navigate(MusicDetailRoute)
-            }
-        )
-        musicDetailScreen(
-            onBackClick = navController::popBackStack
-        )
+        musicListScreen()
+        musicDetailScreen()
     }
 }
 
