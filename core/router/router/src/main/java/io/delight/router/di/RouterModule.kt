@@ -11,7 +11,7 @@ import io.delight.router_api.Navigator
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-internal abstract class RouterModel {
+internal abstract class RouterModule {
 
     @Binds
     @ActivityRetainedScoped
