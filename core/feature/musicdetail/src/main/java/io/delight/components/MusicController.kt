@@ -21,11 +21,38 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.delight.player_api.RepeatMode
+import kotlinx.coroutines.delay
+
+private const val BUFFERING_DEBOUNCE_MS = 200L
+
+@Composable
+private fun rememberDebouncedBuffering(
+    isBuffering: Boolean,
+    debounceMs: Long = BUFFERING_DEBOUNCE_MS
+): Boolean {
+    var showBuffering by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isBuffering) {
+        if (isBuffering) {
+            delay(debounceMs)
+            showBuffering = true
+        } else {
+            showBuffering = false
+        }
+    }
+
+    return showBuffering
+}
 
 @Composable
 internal fun MusicController(
@@ -39,6 +66,8 @@ internal fun MusicController(
     onShuffleClick: () -> Unit,
     onRepeatClick: () -> Unit
 ) {
+    val showBuffering = rememberDebouncedBuffering(isBuffering)
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -82,7 +111,7 @@ internal fun MusicController(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (isBuffering) {
+                if (showBuffering) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(32.dp),
                         color = MaterialTheme.colorScheme.onPrimary,

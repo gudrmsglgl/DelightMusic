@@ -59,7 +59,7 @@ class MediaControllerManagerImpl @Inject constructor(
 
     override fun togglePlayPause() {
         mediaController?.let { controller ->
-            if (controller.isPlaying) {
+            if (controller.playWhenReady) {
                 controller.pause()
             } else {
                 controller.play()

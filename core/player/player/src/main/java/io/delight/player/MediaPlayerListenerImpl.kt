@@ -40,7 +40,7 @@ class MediaPlayerListenerImpl @Inject constructor(
 
         val currentPlayerState = MutableStateFlow(
             PlayerState(
-                isPlaying = mediaController.isPlaying,
+                isPlaying = mediaController.playWhenReady,
                 currentMediaItem = mediaController.currentMediaItem,
                 currentPosition = mediaController.currentPosition,
                 duration = mediaController.duration.takeIf { it > 0 } ?: 0L,
@@ -72,9 +72,9 @@ class MediaPlayerListenerImpl @Inject constructor(
         }
 
         val playerListener = object : Player.Listener {
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                super.onIsPlayingChanged(isPlaying)
-                currentPlayerState.update { it.copy(isPlaying = isPlaying) }
+            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+                super.onPlayWhenReadyChanged(playWhenReady, reason)
+                currentPlayerState.update { it.copy(isPlaying = playWhenReady) }
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
