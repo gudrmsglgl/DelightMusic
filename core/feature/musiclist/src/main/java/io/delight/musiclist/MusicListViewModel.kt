@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -70,17 +71,20 @@ class MusicListViewModel @Inject constructor(
     }
 
     fun playMusic(music: Music) {
-        val currentPlayingId = uiState.value.currentPlayingId
+        viewModelScope.launch {
+            val playerState = mediaControllerManager.playerState.first()
+            val currentPlayingId = playerState.currentMediaId?.toLongOrNull()
 
-        if (currentPlayingId != music.id) {
-            val currentMusicList = uiState.value.musicList
-            val startIndex = currentMusicList
-                .indexOfFirst { it.id == music.id }
-                .takeIf { it >= 0 }
-                ?: 0
+            if (currentPlayingId != music.id) {
+                val currentMusicList = uiState.value.musicList
+                val startIndex = currentMusicList
+                    .indexOfFirst { it.id == music.id }
+                    .takeIf { it >= 0 }
+                    ?: 0
 
-            val playlist = currentMusicList.map { it.toMediaItemData() }
-            mediaControllerManager.setPlaylistAndPlay(playlist, startIndex)
+                val playlist = currentMusicList.map { it.toMediaItemData() }
+                mediaControllerManager.setPlaylistAndPlay(playlist, startIndex)
+            }
         }
     }
 
